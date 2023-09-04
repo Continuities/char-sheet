@@ -4,7 +4,7 @@
  * @since 2023-09-04
  */
 
-import { useReducer, useContext, createContext } from 'react';
+import { useReducer, useContext, createContext, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import { ATTRIBUTE_LIST } from './consts';
 
@@ -12,6 +12,8 @@ const PartyContext = createContext([ {}, () => {} ]);
 
 const partyReducer = (state, action) => {
   switch (action.type) {
+    case 'hydrate':
+      return action.data;
     case 'increase-stat':
       return {
         ...state,
@@ -70,7 +72,29 @@ const partyReducer = (state, action) => {
 };
 
 export const PartyProvider = ({ children }) => {
-  const [ party, dispatch ] = useReducer(partyReducer, Party());
+  const [ party, dispatch ] = useReducer(partyReducer, {});
+
+  const json = JSON.stringify(party);
+  useEffect(() => {
+    fetch('https://recruiting.verylongdomaintotestwith.ca/api/{continuities}/character')
+      .then(r => r.json())
+      .then(data => dispatch({
+        type: 'hydrate',
+        data: Object.values(data.body).length == 0 ? Party() : data.body
+      }));
+  }, []);
+  useEffect(() => {
+    if (json === '{}') {
+      return;
+    }
+    fetch('https://recruiting.verylongdomaintotestwith.ca/api/{continuities}/character', {
+      method: 'post',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: json
+    });
+  }, [json]);
 
   return (
     <PartyContext.Provider value={[ party, dispatch ]}>
@@ -102,7 +126,7 @@ export const meetsRequirements = (character, requirements) => {
   );
 };
 
-const spentPoints = (character) => Object.values(character.skills).reduce((p, c) => p + c);
+const spentPoints = (character) => Object.values(character.skills).reduce((p, c) => p + c, 0);
 
 export const modifier = (value) => {
   return Math.floor((value - 10) / 2);

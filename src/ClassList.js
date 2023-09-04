@@ -32,7 +32,6 @@ const ClassRow = ({ className, available }) => {
         key={className}
         color={ available ? 'success.main' : 'error.main'}
         onClick={(e) => {
-          console.log('foo');
           setEl(e.currentTarget)
         }}
       >
