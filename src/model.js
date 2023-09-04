@@ -6,7 +6,7 @@
 
 import { useReducer, useContext, createContext, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
-import { ATTRIBUTE_LIST } from './consts';
+import { ATTRIBUTE_LIST, MAX_ATTRIBUTES } from './consts';
 
 const PartyContext = createContext([ {}, () => {} ]);
 
@@ -15,6 +15,9 @@ const partyReducer = (state, action) => {
     case 'hydrate':
       return action.data;
     case 'increase-stat':
+      if (attributeTotal(state[action.character]) >= MAX_ATTRIBUTES) {
+        return state;
+      }
       return {
         ...state,
         [action.character]: {
@@ -127,6 +130,7 @@ export const meetsRequirements = (character, requirements) => {
 };
 
 const spentPoints = (character) => Object.values(character.skills).reduce((p, c) => p + c, 0);
+const attributeTotal = (character) => Object.values(character.attributes).reduce((p, c) => p + c, 0);
 
 export const modifier = (value) => {
   return Math.floor((value - 10) / 2);
