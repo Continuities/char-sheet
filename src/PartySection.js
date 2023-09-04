@@ -7,15 +7,20 @@
 import React from 'react';
 import { useParty } from './model';
 import CharacterCard from './CharacterCard';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 const Party = () => {
-  const [ party ] = useParty();
+  const [ party, dispatch ] = useParty();
   return (
-    <main>
+    <Stack spacing={4}>
       { Object.values(party).map(character => (
         <CharacterCard key={character.id} character={character} />
       ))}
-    </main>
+      <Button onClick={() => dispatch({ type: 'add-character'})}>
+        Add Character
+      </Button>
+    </Stack>
   );
 };
 

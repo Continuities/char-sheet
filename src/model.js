@@ -14,6 +14,12 @@ const partyReducer = (state, action) => {
   switch (action.type) {
     case 'hydrate':
       return action.data;
+    case 'add-character':
+      const char = Character();
+      return {
+        ...state,
+        [char.id]: char
+      };
     case 'increase-stat':
       if (attributeTotal(state[action.character]) >= MAX_ATTRIBUTES) {
         return state;
