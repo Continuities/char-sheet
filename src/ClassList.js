@@ -4,24 +4,59 @@
  * @since 2023-09-04
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { CLASS_LIST } from './consts';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Popover from '@mui/material/Popover';
 import { meetsRequirements } from './model';
 
 const ClassList = ({ character }) => {
   return (
     <Stack spacing={1}>
       {Object.entries(CLASS_LIST).map(([ className, requirements ]) => (
-        <Typography 
+        <ClassRow 
           key={className}
-          color={ meetsRequirements(character, requirements) ? 'success.main' : 'error.main'}
-        >
-          {className}
-        </Typography>
+          className={className} 
+          available={meetsRequirements(character, requirements)} />
       ))}
     </Stack>
+  );
+};
+
+const ClassRow = ({ className, available }) => {
+  const [ el, setEl ] = useState(null);
+  return (
+    <>
+      <Typography 
+        key={className}
+        color={ available ? 'success.main' : 'error.main'}
+        onClick={(e) => {
+          console.log('foo');
+          setEl(e.currentTarget)
+        }}
+      >
+        {className}
+      </Typography>
+      <Popover
+        id={el ? 'simple-popover' : undefined}
+        open={Boolean(el)}
+        anchorEl={el}
+        onClose={() => setEl(null)}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left'
+        }}
+      >
+        <Stack>
+          {Object.entries(CLASS_LIST[className]).map(([attr, req]) => (
+            <Typography key={attr}>
+              {attr}: {req}
+            </Typography>
+          ))}
+        </Stack>
+      </Popover>
+    </>
   );
 };
 
