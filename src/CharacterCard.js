@@ -14,6 +14,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import { ATTRIBUTE_LIST } from './consts';
 import { useParty, modifier } from './model';
 import ClassList from './ClassList';
+import SkillList from './SkillList';
 
 const CharacterCard = ({ character }) => {
   const [, dispatch] = useParty();
@@ -30,19 +31,22 @@ const CharacterCard = ({ character }) => {
   return (
     <Card>
       <CardContent>
-        <Stack direction='row'>
-          <Stack spacing={1}>
-            { ATTRIBUTE_LIST.map(attr => (
-              <AttributeRow 
-                key={attr} 
-                attribute={attr}
-                onIncrement={increment}
-                onDecrement={decrement}
-                value={character.attributes[attr]} 
-              />
-            ))}
+        <Stack spacing={2}>
+          <Stack direction='row'>
+            <Stack spacing={1}>
+              { ATTRIBUTE_LIST.map(attr => (
+                <AttributeRow 
+                  key={attr} 
+                  attribute={attr}
+                  onIncrement={increment}
+                  onDecrement={decrement}
+                  value={character.attributes[attr]} 
+                />
+              ))}
+            </Stack>
+            <ClassList character={character} />
           </Stack>
-          <ClassList character={character} />
+          <SkillList character={character} />
         </Stack>
       </CardContent>
     </Card>

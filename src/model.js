@@ -24,6 +24,9 @@ const partyReducer = (state, action) => {
         }
       };
     case 'decrease-stat':
+      if (state[action.character].attributes[action.attribute] <= 1) {
+        return state;
+      }
       return {
         ...state,
         [action.character]: {
@@ -31,6 +34,34 @@ const partyReducer = (state, action) => {
           attributes: {
             ...state[action.character].attributes,
             [action.attribute]: state[action.character].attributes[action.attribute] - 1
+          }
+        }
+      };
+    case 'increase-skill':
+      if (spentPoints(state[action.character]) >= skillpoints(state[action.character])) {
+        return state;
+      }
+      return {
+        ...state,
+        [action.character]: {
+          ...state[action.character],
+          skills: {
+            ...state[action.character].skills,
+            [action.skill]: (state[action.character].skills[action.skill] ?? 0) + 1
+          }
+        }
+      };
+    case 'decrease-skill':
+      if ((state[action.character].skills[action.skill] ?? 0) <= 0) {
+        return state;
+      }
+      return {
+        ...state,
+        [action.character]: {
+          ...state[action.character],
+          skills: {
+            ...state[action.character].skills,
+            [action.skill]: (state[action.character].skills[action.skill] ?? 0) - 1
           }
         }
       };
@@ -71,6 +102,10 @@ export const meetsRequirements = (character, requirements) => {
   );
 };
 
+const spentPoints = (character) => Object.values(character.skills).reduce((p, c) => p + c);
+
 export const modifier = (value) => {
   return Math.floor((value - 10) / 2);
-}
+};
+
+export const skillpoints = (character) => 10 + 4 * modifier(character.attributes['Intelligence']);

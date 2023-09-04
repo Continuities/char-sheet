@@ -32,7 +32,7 @@ export const CLASS_LIST = {
         'Wisdom': 9,
         'Charisma': 14,
     },
-}
+};
 
 export const SKILL_LIST = [
     { name: 'Acrobatics', attributeModifier: 'Dexterity' },
@@ -54,4 +54,4 @@ export const SKILL_LIST = [
     { name: 'Stealth', attributeModifier: 'Dexterity' },
     { name: 'Survival', attributeModifier: 'Wisdom' },
 
-]
+];
