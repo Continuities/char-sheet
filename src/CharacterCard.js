@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { ATTRIBUTE_LIST } from './consts';
-import { useParty } from './model';
+import { useParty, modifier } from './model';
 import ClassList from './ClassList';
 
 const CharacterCard = ({ character }) => {
@@ -56,6 +56,9 @@ const AttributeRow = ({ attribute, value, onIncrement, onDecrement }) => (
     </Typography>
     <Typography>
       {value}
+    </Typography>
+    <Typography>
+      ({modifier(value)})
     </Typography>
     <ButtonGroup variant='contained' size='small'>
       <Button onClick={() => onIncrement(attribute)}>+</Button>

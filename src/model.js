@@ -70,3 +70,7 @@ export const meetsRequirements = (character, requirements) => {
       .find(([ attr, req ]) => character.attributes[attr] < req)
   );
 };
+
+export const modifier = (value) => {
+  return Math.floor((value - 10) / 2);
+}
