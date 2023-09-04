@@ -62,3 +62,11 @@ const Character = () => ({
   attributes: Object.fromEntries(ATTRIBUTE_LIST.map(attr => [ attr, 10 ])),
   skills: {}
 });
+
+export const meetsRequirements = (character, requirements) => {
+  return !Boolean(
+    Object
+      .entries(requirements)
+      .find(([ attr, req ]) => character.attributes[attr] < req)
+  );
+};

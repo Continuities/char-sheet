@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { ATTRIBUTE_LIST } from './consts';
 import { useParty } from './model';
+import ClassList from './ClassList';
 
 const CharacterCard = ({ character }) => {
   const [, dispatch] = useParty();
@@ -29,16 +30,19 @@ const CharacterCard = ({ character }) => {
   return (
     <Card>
       <CardContent>
-        <Stack spacing={1}>
-          { ATTRIBUTE_LIST.map(attr => (
-            <AttributeRow 
-              key={attr} 
-              attribute={attr}
-              onIncrement={increment}
-              onDecrement={decrement}
-              value={character.attributes[attr]} 
-            />
-          ))}
+        <Stack direction='row'>
+          <Stack spacing={1}>
+            { ATTRIBUTE_LIST.map(attr => (
+              <AttributeRow 
+                key={attr} 
+                attribute={attr}
+                onIncrement={increment}
+                onDecrement={decrement}
+                value={character.attributes[attr]} 
+              />
+            ))}
+          </Stack>
+          <ClassList character={character} />
         </Stack>
       </CardContent>
     </Card>
