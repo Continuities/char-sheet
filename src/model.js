@@ -89,7 +89,7 @@ export const PartyProvider = ({ children }) => {
       .then(r => r.json())
       .then(data => dispatch({
         type: 'hydrate',
-        data: Object.values(data.body).length == 0 ? Party() : data.body
+        data: Object.values(data.body ?? {}).length == 0 ? Party() : data.body
       }));
   }, []);
   useEffect(() => {
